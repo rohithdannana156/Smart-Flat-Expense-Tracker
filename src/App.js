@@ -14,7 +14,10 @@ import {
   PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, LineChart, Line, AreaChart, Area
 } from 'recharts';
 
-// --- Configuration Loader ---
+// --- Configuration & Constants ---
+
+// CHANGE APP NAME HERE
+const APP_NAME = "Smart Expense Tracker"; 
 
 const getFirebaseConfig = () => {
     // 1. Try Canvas Environment
@@ -75,7 +78,7 @@ const getGeminiApiKey = () => {
   } catch (e) {}
   
   // Return the provided key as fallback
-  return "AIzaSyCQzD5fdnSVdCPg98vo94r3O-tpp6bmSQA";
+  return "";
 };
 
 const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
@@ -150,7 +153,7 @@ const generateReportPDF = async (expenses, startDate, endDate) => {
     doc.setFont("helvetica", "bold");
     doc.setFontSize(22);
     doc.setTextColor(0, 137, 123); // Teal color
-    doc.text("Flat Expense Report", margin, currentY);
+    doc.text(APP_NAME + " Report", margin, currentY); // Used APP_NAME here
     currentY += 10;
 
     doc.setFont("helvetica", "normal");
@@ -401,7 +404,7 @@ const AppLayout = ({ view, setView, handleLogout, clearSelectedExpenseForEdit, c
             {/* Sidebar */}
             <aside className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-gray-900 border-r border-gray-800 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 transition-transform duration-200 flex flex-col`}>
                 <div className="p-6 border-b border-gray-800 flex justify-between items-center">
-                    <h1 className="font-bold text-xl text-teal-400">ExpenseTracker</h1>
+                    <h1 className="font-bold text-xl text-teal-400">{APP_NAME}</h1> {/* Uses Constant */}
                     <button className="lg:hidden" onClick={() => setIsSidebarOpen(false)}><X className="w-5 h-5"/></button>
                 </div>
                 <nav className="flex-1 p-4 space-y-2">
@@ -430,7 +433,7 @@ const AppLayout = ({ view, setView, handleLogout, clearSelectedExpenseForEdit, c
             {/* Main Content */}
             <main className="flex-1 flex flex-col h-screen overflow-hidden bg-gray-950">
                 <header className="h-16 border-b border-gray-800 flex items-center justify-between px-6 lg:hidden bg-gray-900">
-                    <span className="font-bold text-lg">Menu</span>
+                    <span className="font-bold text-lg">{APP_NAME}</span>
                     <button onClick={() => setIsSidebarOpen(true)}><Menu className="w-6 h-6 text-gray-400"/></button>
                 </header>
                 <div className="flex-1 overflow-auto p-4 lg:p-8">
@@ -479,7 +482,8 @@ function LoginDashboard({ setUser }) {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800 text-white p-4">
             <div className="max-w-md w-full bg-gray-800/50 backdrop-blur-lg p-8 rounded-2xl border border-gray-700 shadow-2xl">
-                <h2 className="text-3xl font-bold text-center mb-6 text-teal-400">{isSignUp ? "Create Account" : "Welcome Back"}</h2>
+                <h1 className="text-xl font-bold text-teal-500 text-center mb-2">{APP_NAME}</h1>
+                <h2 className="text-3xl font-bold text-center mb-6 text-white">{isSignUp ? "Create Account" : "Welcome Back"}</h2>
                 {error && <div className="bg-red-500/10 border border-red-500 text-red-400 text-sm p-3 rounded-lg mb-4 flex items-center gap-2"><AlertTriangle className="w-4 h-4" /> {error}</div>}
                 <form onSubmit={isSignUp ? handleSignUp : handleLogin} className="space-y-4">
                     <div className="relative">
